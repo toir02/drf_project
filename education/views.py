@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 
 from education.models import Course, Lesson, Payment
@@ -36,3 +36,5 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
 class PaymentViewSet(viewsets.ModelViewSet):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ('course', 'lesson',)
