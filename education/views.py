@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, generics
 
 from education.models import Course, Lesson, Payment
-from education.serializers import CourseSerializer, LessonSerializer
+from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
