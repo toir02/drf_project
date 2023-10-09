@@ -4,13 +4,13 @@ from rest_framework import viewsets, generics
 
 from education.models import Course, Lesson, Payment
 from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
-from users.permissions import IsModerator
+from users.permissions import IsModerator, IsOwner
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = [IsModerator]
+    permission_classes = [IsModerator | IsOwner]
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
