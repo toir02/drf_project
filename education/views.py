@@ -2,8 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework import viewsets, generics
 
-from education.models import Course, Lesson, Payment
-from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
+from education.models import Course, Lesson, Payment, Subscription
+from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from .permissions import IsModerator, IsOwner
 
 
@@ -47,3 +47,11 @@ class PaymentViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ['date']
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(is_active=True)
