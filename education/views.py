@@ -55,3 +55,7 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(is_active=True)
+
+
+class SubscriptionDestroyAPIView(generics.DestroyAPIView):
+    queryset = Subscription.objects.all()
