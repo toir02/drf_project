@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework import viewsets, generics
+from rest_framework.permissions import AllowAny
 
 from education.models import Course, Lesson, Payment, Subscription
 from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
@@ -55,6 +56,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
 class SubscriptionCreateAPIView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         serializer.save(is_active=True)
@@ -62,3 +64,4 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
 
 class SubscriptionDestroyAPIView(generics.DestroyAPIView):
     queryset = Subscription.objects.all()
+    permission_classes = [AllowAny]
