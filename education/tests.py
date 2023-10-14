@@ -8,18 +8,17 @@ from education.models import Lesson
 class LessonTestCase(APITestCase):
 
     def setUp(self):
-        pass
-
-    def test_create_lesson(self):
-        """test for create lesson"""
-        data = {
+        self.data = {
             "title": "test",
             "description": "test",
             "link": "https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s",
         }
 
+    def test_create_lesson(self):
+        """test for create lesson"""
+
         url = reverse("education:lesson_create")
-        response = self.client.post(url, data=data)
+        response = self.client.post(url, data=self.data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -33,4 +32,15 @@ class LessonTestCase(APITestCase):
 
     def test_get_lessons(self):
         """test for get lessons"""
-        url = reverse("education:lessons")
+        Lesson.objects.create(id=1, title='test', description='test', image=None,
+                              link='https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', user=None, course=None)
+
+        url = reverse("education:lesson_list")
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.json(), {'count': 1, 'next': None, 'previous': None, 'results': [
+            {'id': 1, 'title': 'test', 'description': 'test', 'image': None,
+             'link': 'https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', 'user': None, 'course': None}]}
+                         )
