@@ -61,4 +61,11 @@ class LessonTestCase(APITestCase):
                          )
 
     def test_delete_lessons(self):
-        pass
+        Lesson.objects.create(id=1, title='no test', description='test', image=None,
+                              link='https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', user=None, course=None)
+
+        url = reverse("education:lesson_delete", kwargs={"pk": 1})
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
