@@ -2,7 +2,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from education.models import Lesson
+from education.models import Lesson, Subscription, Course
+from users.models import User
 
 
 class LessonTestCase(APITestCase):
@@ -61,6 +62,8 @@ class LessonTestCase(APITestCase):
                          )
 
     def test_delete_lessons(self):
+        """test for delete lessons"""
+
         Lesson.objects.create(id=1, title='no test', description='test', image=None,
                               link='https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', user=None, course=None)
 
@@ -69,3 +72,25 @@ class LessonTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+
+class SubscriptionTestCase(APITestCase):
+    def setUp(self):
+        self.data = {
+            "user": 1,
+            "course": 1,
+            "is_active": True
+        }
+
+        User.objects.create(email='test@test.com', password='test')
+        Course.objects.create(title="test", description="test")
+
+    def test_create_subscription(self):
+        """test for create subscription"""
+
+        url = reverse("education:create-subscription")
+
+        response = self.client.post(url, data=self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        self.assertEqual(response.json(), {'id': 1, 'is_active': True, 'user': 1, 'course': 1})
