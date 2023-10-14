@@ -44,3 +44,21 @@ class LessonTestCase(APITestCase):
             {'id': 1, 'title': 'test', 'description': 'test', 'image': None,
              'link': 'https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', 'user': None, 'course': None}]}
                          )
+
+    def test_update_lessons(self):
+        """test for update lessons"""
+        Lesson.objects.create(id=1, title='no test', description='test', image=None,
+                              link='https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', user=None, course=None)
+
+        url = reverse("education:lesson_edit", kwargs={"pk": 1})
+        response = self.client.put(url, data=self.data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.assertEqual(response.json(), {'id': 1, 'title': 'test', 'description': 'test', 'image': None,
+                                           'link': 'https://www.youtube.com/watch?v=_x8DV1WLtks&t=142s', 'user': None,
+                                           'course': None}
+                         )
+
+    def test_delete_lessons(self):
+        pass
