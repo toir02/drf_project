@@ -94,3 +94,16 @@ class SubscriptionTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         self.assertEqual(response.json(), {'id': 1, 'is_active': True, 'user': 1, 'course': 1})
+
+    def test_delete_subscription(self):
+        """test for delete subscription"""
+        user = User.objects.get(pk=1)
+        course = Course.objects.get(pk=1)
+
+        Subscription.objects.create(user=user, course=course, is_active=True)
+
+        url = reverse("education:delete-subscription", kwargs={"pk": 1})
+
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
