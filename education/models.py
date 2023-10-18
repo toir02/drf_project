@@ -49,6 +49,7 @@ class Payment(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='оплаченный урок', **NULLABLE)
     amount = models.PositiveIntegerField(verbose_name='сумма оплаты')
     payment_method = models.CharField(max_length=15, verbose_name='способ оплаты', choices=PAYMENT_METHOD_CHOICES)
+    payment_stripe_id = models.CharField(max_length=255, verbose_name='id платежа', **NULLABLE)
 
     class Meta:
         verbose_name = 'платеж'
