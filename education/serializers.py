@@ -39,10 +39,19 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class PaymentSerializer(serializers.ModelSerializer):
+    payment_stripe = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Payment
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = kwargs.get('context').get('request')
+
+    def get_payment_stripe(self, instance):
+        if self.request.method == 'POST':
+            pass
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
