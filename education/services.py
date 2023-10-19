@@ -3,7 +3,7 @@ import requests
 from config.settings import STRIPE_API_KEY
 
 
-def create_payment_intent(amount, currency='rub'):
+def create_payment_intent(amount, currency='USD'):
     headers = {'Authorization': f'Bearer {STRIPE_API_KEY}'}
     params = {'amount': amount, 'currency': currency}
     response = requests.post('https://api.stripe.com/v1/payment_intents', headers=headers, params=params)

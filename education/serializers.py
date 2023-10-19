@@ -58,6 +58,7 @@ class PaymentSerializer(serializers.ModelSerializer):
             obj_payment.save()
 
             return retrieve_payment_intent(payment_stripe_id)
+
         if self.request.method == 'GET':
             if not instance.payment_stripe_id:
                 return None
