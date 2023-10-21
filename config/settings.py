@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -161,3 +162,10 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'noreply@oscarbot.ru'
 EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
 EMAIL_USE_SSL = True
+
+CELERY_BEAT_SCHEDULE = {
+    'block_inactive_user': {
+        'task': 'users.tasks.block_inactive_user',
+        'schedule': timedelta(seconds=30),
+    },
+}
