@@ -7,6 +7,7 @@ from education.models import Course, Lesson, Payment, Subscription
 from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from .paginators import EducationPaginator
 from .permissions import IsModerator, IsOwner
+from .tasks import send_mail_for_update_course
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -14,6 +15,14 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     permission_classes = [IsModerator | IsOwner]
     pagination_class = EducationPaginator
+
+    def perform_create(self, serializer):
+        new_course = serializer.save()
+        new_course.owner = self.request.user
+        new_course.save()
+
+        if new_course:
+            send_mail_for_update_course.delay(course_id=new_course.course.id)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
