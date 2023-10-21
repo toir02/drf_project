@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'django_filters',
-    'django_celery_beat'
+    'django_celery_beat',
 
     'users',
     'education',
